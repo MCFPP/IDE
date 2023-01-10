@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import settings from "electron-settings";
+import path from "path";
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 // Scheme must be registered before the app is ready
@@ -18,7 +19,10 @@ async function createWindow() {
         height: Number(settings.getSync("window.height") || 360),
         x: Number(settings.getSync("window.x")),
         y: Number(settings.getSync("window.y")),
-        webPreferences: {},
+        webPreferences: {
+            contextIsolation: true,
+            preload: path.join(__dirname, "..", "public", "preload.js"),
+        },
     });
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
