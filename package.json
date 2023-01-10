@@ -1,0 +1,97 @@
+{
+	"name": "mcfpp",
+	"version": "0.1.0",
+	"description": "A powerful minecraft data-pack IDE with MCFunction++ language support",
+	"private": true,
+	"scripts": {
+		"serve": "vue-cli-service serve",
+		"build": "vue-cli-service build",
+		"lint": "vue-cli-service lint",
+		"electron:build": "vue-cli-service electron:build",
+		"electron:serve": "vue-cli-service electron:serve",
+		"postinstall": "electron-builder install-app-deps",
+		"postuninstall": "electron-builder install-app-deps"
+	},
+	"main": "background.js",
+	"dependencies": {
+		"core-js": "^3.8.3",
+		"electron-settings": "^4.0.2",
+		"vue": "^3.2.13",
+		"vue-class-component": "^8.0.0-0"
+	},
+	"devDependencies": {
+		"@types/electron-devtools-installer": "^2.2.0",
+		"@types/node": "^18.11.18",
+		"@typescript-eslint/eslint-plugin": "^5.4.0",
+		"@typescript-eslint/parser": "^5.4.0",
+		"@vue/cli-plugin-babel": "~5.0.0",
+		"@vue/cli-plugin-eslint": "~5.0.0",
+		"@vue/cli-plugin-typescript": "~5.0.0",
+		"@vue/cli-service": "~5.0.0",
+		"@vue/eslint-config-standard": "^6.1.0",
+		"@vue/eslint-config-typescript": "^9.1.0",
+		"electron": "^13.0.0",
+		"electron-devtools-installer": "^3.1.0",
+		"eslint": "^7.32.0",
+		"eslint-plugin-import": "^2.25.3",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-promise": "^5.1.0",
+		"eslint-plugin-vue": "^8.0.3",
+		"sass": "^1.32.7",
+		"sass-loader": "^12.0.0",
+		"ts-loader": "~8.2.0",
+		"typescript": "~4.5.5",
+		"vue-cli-plugin-electron-builder": "~2.1.1"
+	},
+	"eslintConfig": {
+		"root": true,
+		"env": {
+			"node": true
+		},
+		"extends": [
+			"plugin:vue/vue3-essential",
+			"@vue/standard",
+			"@vue/typescript/recommended"
+		],
+		"parserOptions": {
+			"ecmaVersion": 2020
+		},
+		"rules": {
+			"quotes": [
+				"warn",
+				"double"
+			],
+			"indent": [
+				"warn",
+				4
+			],
+			"semi": [
+				"warn",
+				"always"
+			],
+			"linebreak-style": [
+				"warn",
+				"unix"
+			],
+			"comma-dangle": [
+				"warn",
+				"always-multiline"
+			],
+			"space-before-function-paren": [
+				"warn",
+				{
+					"anonymous": "always",
+					"named": "never",
+					"asyncArrow": "always"
+				}
+			],
+			"@typescript-eslint/no-explicit-any": "off"
+		}
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead",
+		"not ie 11"
+	]
+}
