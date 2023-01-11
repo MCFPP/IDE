@@ -1,5 +1,9 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("API", {
-    // Later to be accessed from window.api.*
+    request: {
+        userOverrides: function () {
+            return ipcRenderer.invoke("request::userOverrides");
+        },
+    },
 });

@@ -1,31 +1,43 @@
 <template>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <MainWindow />
+    <NavBar />
 </template>
 
 <!-- ... -->
 
 <script lang="ts">
+// Vue stuff
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "./components/HelloWorld.vue";
+import NavBar from "./components/composed/NavBar.vue";
+import MainWindow from "./components/composed/MainWindow.vue";
 
 @Options({
     components: {
-        HelloWorld,
+        MainWindow,
+        NavBar,
     },
 })
+
 export default class App extends Vue { }
+
+// IDE stuff
+interface exposedAPI {
+    API: {
+        request: {
+            userOverrides: () => Promise<any>,
+        }
+    }
+}
+
+const API = (window as unknown as exposedAPI).API;
+
+API.request.userOverrides().then(value => {
+    console.log(value);
+});
 </script>
 
 <!-- ... -->
 
-<style lang="scss">
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-}
+<style lang="scss" src="./assets/styles/base.scss">
+
 </style>

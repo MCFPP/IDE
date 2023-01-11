@@ -1,6 +1,6 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, ipcMain } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import settings from "electron-settings";
@@ -13,8 +13,8 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 async function createWindow() {
-    // Create the browser window.
-    const win = new BrowserWindow({
+    // Create the browser window, restore previous dimensions and position if stored.
+    const window = new BrowserWindow({
         width: Number(settings.getSync("window.width") || 720),
         height: Number(settings.getSync("window.height") || 360),
         x: Number(settings.getSync("window.x")),
@@ -27,19 +27,20 @@ async function createWindow() {
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
-        await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
-        if (!process.env.IS_TEST) win.webContents.openDevTools();
+        await window.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+        if (!process.env.IS_TEST) window.webContents.openDevTools();
     } else {
         createProtocol("app");
         // Load the index.html when not in development
-        win.loadURL("app://./index.html");
+        window.loadURL("app://./index.html");
     }
 
-    win.on("close", () => settings.setSync("window", {
-        width: win.getBounds().width,
-        height: win.getBounds().height,
-        x: win.getBounds().x,
-        y: win.getBounds().y,
+    window.on("close", () => settings.setSync("window", {
+        // Store window dimensions and position on close.
+        width: window.getBounds().width,
+        height: window.getBounds().height,
+        x: window.getBounds().x,
+        y: window.getBounds().y,
     }));
 }
 
@@ -71,6 +72,15 @@ app.on("ready", async () => {
         }
     }
     createWindow();
+
+    ipcMain.handle("request::userOverrides", () => {
+        let userOverrides = settings.getSync("userOverrides");
+        if (!userOverrides) {
+            settings.setSync("userOverrides", {});
+            userOverrides = {};
+        }
+        return userOverrides;
+    });
 });
 
 // Exit cleanly on request from parent process in development mode.

@@ -1,0 +1,73 @@
+// Common SASS variables/mixins/etc.
+
+%reset {
+    appearance: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+    background-color: transparent;
+    color: inherit;
+    text-decoration: none;
+    font-style: normal;
+}
+
+
+%row {
+    display: flex;
+    flex-direction: row;
+}
+
+
+%rowC {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+%rowS {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}
+
+
+%col {
+    display: flex;
+    flex-direction: column;
+}
+
+
+%colC {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+%colS {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+%gap {
+    @extend %reset;
+
+    width: 0;
+    height: 0;
+    margin: auto;
+}
+
+%fontM {
+    font-family: "JetBrains Mono", monospace;
+}
+
+%fontR {
+    font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}

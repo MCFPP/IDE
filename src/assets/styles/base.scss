@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@400;700&display=swap');
+@import "common";
+
+
+:root {
+    --primary: #24282e;
+    --primary-fore: #2b2f36;
+    --primary-back: #1f2428;
+
+    --text: #dedede;
+    --text-back: #ffffff8d;
+    --text-fore: #ffffff;
+
+    --accent: #4bcd5d;
+
+    --btn-color: 255 255 255;
+    --border: 1px solid rgb(0 0 0 / 0.16);
+}
+
+
+body {
+    @extend %reset;
+    @extend %rowS;
+    background-color: var(--primary);
+    color: var(--text);
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.icon {
+    min-height: 1rem;
+    min-width: 1rem;
+}
+
+#app {
+    @extend %rowS;
+    width: 100%;
+    height: 100%;
+}
+
+main {
+    @extend %colS;
+    width: 100%;
+}
