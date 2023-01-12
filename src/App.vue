@@ -1,6 +1,6 @@
 <template>
-    <MainWindow />
-    <NavBar />
+    <main-window />
+    <nav-bar />
 </template>
 
 <!-- ... -->
@@ -20,19 +20,8 @@ import MainWindow from "./components/composed/MainWindow.vue";
 
 export default class App extends Vue { }
 
-// IDE stuff
-interface exposedAPI {
-    API: {
-        request: {
-            userOverrides: () => Promise<any>,
-        }
-    }
-}
-
-const API = (window as unknown as exposedAPI).API;
-
-API.request.userOverrides().then(value => {
-    console.log(value);
+window.API.request.userOverrides().then((value: any) => {
+    console.log("userOverrides", value);
 });
 </script>
 

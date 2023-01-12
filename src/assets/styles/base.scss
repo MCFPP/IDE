@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Sofia+Sans:wght@400;700;900&display=swap');
 @import "common";
 
 
@@ -12,9 +12,19 @@
     --text-fore: #ffffff;
 
     --accent: #4bcd5d;
+    --theme-accent: 75 205 93;
+    --theme-warning: 255 239 95;
+    --theme-disturbing: 255 81 81;
 
     --btn-color: 255 255 255;
     --border: 1px solid rgb(0 0 0 / 0.16);
+
+    --format-advancement: #ffb743;
+    --format-recipe: #d3ff43;
+    --format-code: var(--accent);
+    --format-predicate: #ff7548;
+    --format-loot-table: #3ca1ff;
+    --format-item-modifier: #d04eff;
 }
 
 

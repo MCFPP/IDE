@@ -41,8 +41,19 @@ button {
     color: var(--text);
     cursor: pointer;
 
+    &.compact {
+        background-color: transparent;
+        padding: 0.25rem;
+        justify-content: center;
+
+        &>strong {
+            display: none;
+        }
+    }
+
     &:focus {
         border: 1px solid rgb(var(--btn-color));
+        opacity: 1 !important;
     }
 
     &:hover {

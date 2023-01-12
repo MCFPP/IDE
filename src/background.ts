@@ -5,7 +5,36 @@ import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import settings from "electron-settings";
 import path from "path";
+import fs from "fs";
 const isDevelopment = process.env.NODE_ENV !== "production";
+let currentProject: string | null = null;
+
+export interface TreeEntry {
+    name: string,
+    content: TreeEntry[] | null,
+}
+
+function walkTree(dirPath: string, isDeep = true): TreeEntry[] {
+    const entries: TreeEntry[] = [];
+
+    for (const entry of fs.readdirSync(dirPath)) {
+        const stats = fs.statSync(path.join(dirPath, entry));
+        if (stats.isFile()) {
+            entries.push({
+                name: entry,
+                content: null,
+            });
+        }
+        if (stats.isDirectory()) {
+            entries.push({
+                name: entry,
+                content: isDeep ? walkTree(path.join(dirPath, entry)) : [],
+            });
+        }
+    }
+
+    return entries;
+}
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -80,6 +109,16 @@ app.on("ready", async () => {
             userOverrides = {};
         }
         return userOverrides;
+    });
+
+    ipcMain.handle("request::explorerContents", () => {
+        currentProject = "/home/admin/Desktop/test";
+        if (!currentProject) return null;
+        return walkTree(path.join(currentProject, "src"));
+    });
+
+    ipcMain.on("send::rmFile", (_, filepath: string) => {
+        fs.rmSync(path.join(currentProject as string, filepath));
     });
 });
 
