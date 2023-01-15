@@ -118,7 +118,16 @@ app.on("ready", async () => {
     });
 
     ipcMain.on("send::rmFile", (_, filepath: string) => {
-        fs.rmSync(path.join(currentProject as string, "src", filepath));
+        const absolutePath = path.join(currentProject as string, "src", filepath);
+        fs.rmSync(absolutePath, { recursive: true });
+    });
+
+    ipcMain.on("send::mkDir", (_, filepath: string) => {
+        fs.mkdirSync(path.join(currentProject as string, "src", filepath), { recursive: true });
+    });
+
+    ipcMain.on("send::createFile", (_, filepath: string) => {
+        fs.writeFileSync(path.join(currentProject as string, "src", filepath), "\n", { encoding: "utf-8" });
     });
 
     ipcMain.on("send::move", (_, source: string, destination: string) => {

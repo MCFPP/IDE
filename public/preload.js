@@ -17,6 +17,12 @@ contextBridge.exposeInMainWorld("API", {
         move: function (source, destination) {
             ipcRenderer.send("send::move", source, destination);
         },
+        createFile: function (filepath) {
+            ipcRenderer.send("send::createFile", filepath);
+        },
+        createDirectory: function (filepath) {
+            ipcRenderer.send("send::mkDir", filepath);
+        },
     },
     separator: path.sep,
 });

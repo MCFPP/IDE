@@ -1,34 +1,24 @@
 <template>
-    <section>
-        <div v-for="option in options" :key="option.name">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
-                class="icon" v-html="option.icon">
-            </svg>
-            <strong>{{ option.name }}</strong>
-        </div>
-    </section>
+    <div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"
+            class="icon" v-html="icon">
+        </svg>
+        <strong>{{ name }}</strong>
+    </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 
-export interface Option {
-    name: string,
-    icon: string,
-    description: string,
-}
-
 @Options({
     props: {
-        options: Array,
+        icon: String,
+        name: String,
     },
 })
 
 export default class SelectOption extends Vue {
-    options!: Option[];
+    icon!: string;
+    name!: string;
 }
 </script>
-
-<style lang="scss">
-
-</style>

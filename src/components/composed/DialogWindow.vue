@@ -51,13 +51,13 @@ section {
     background-color: var(--primary-back);
     border: 2px solid rgb(var(--theme-warning));
     border-radius: 1rem;
-    overflow: hidden;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 
     &>header {
+        border-radius: 1rem 1rem 0 0;
         border-bottom: 1px solid rgb(255 255 255 / 0.16);
         font-weight: bold;
         padding: 0.5rem 1rem;
@@ -67,12 +67,15 @@ section {
     }
 
     &>div {
+        @extend %colS;
         padding: 1rem;
+        gap: 0.5rem;
     }
 
     &>footer {
         @extend %rowS;
         border-top: 1px solid rgb(255 255 255 / 0.16);
+        border-radius: 0 0 1rem 1rem;
 
         &>button {
             @extend %reset;
