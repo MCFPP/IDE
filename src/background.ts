@@ -118,7 +118,11 @@ app.on("ready", async () => {
     });
 
     ipcMain.on("send::rmFile", (_, filepath: string) => {
-        fs.rmSync(path.join(currentProject as string, filepath));
+        fs.rmSync(path.join(currentProject as string, "src", filepath));
+    });
+
+    ipcMain.on("send::move", (_, source: string, destination: string) => {
+        fs.renameSync(path.join(currentProject as string, "src", source), path.join(currentProject as string, "src", destination));
     });
 });
 

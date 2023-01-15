@@ -9,6 +9,7 @@ declare global {
             },
             send: {
                 removeFile: (filepath: string) => void,
+                move: (source: string, destination: string) => void,
             },
             separator: string,
         };

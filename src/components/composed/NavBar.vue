@@ -7,7 +7,9 @@
                 </header>
                 <span v-if="explorerState === 'loading'">Loading explorer..</span>
                 <section v-else-if="explorerState === 'done'">
-                    <tree-item name="src" :contents="projectTree"></tree-item>
+                    <tree-item v-for="entry in projectTree" :key="entry.name" :contents="entry.content" root=""
+                        :name="entry.name" @reload-tree="reload">
+                    </tree-item>
                 </section>
             </section>
             <section id="pack_info" v-if="tab === 'pack_info'"></section>
@@ -44,7 +46,12 @@ export default class NavBar extends Vue {
     projectTree: TreeEntry[] = [];
 
     created() {
-        (window as any).API.request.explorerContents().then((project: TreeEntry[]) => {
+        this.reload();
+    }
+
+    reload() {
+        console.log("Reloading...");
+        window.API.request.explorerContents().then((project: TreeEntry[] | null) => {
             if (project === null) { // Hide if no project is opened
                 this.tab = "none";
                 this.explorerState = "cancelled";

@@ -14,6 +14,9 @@ contextBridge.exposeInMainWorld("API", {
         removeFile: function (filepath) {
             ipcRenderer.send("send::rmFile", filepath);
         },
+        move: function (source, destination) {
+            ipcRenderer.send("send::move", source, destination);
+        },
     },
     separator: path.sep,
 });
