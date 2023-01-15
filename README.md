@@ -22,10 +22,10 @@ yarn install
 
 ## Step 3. Run/Build the app
 
-````
+```
 yarn electron:build
 ``` or
-````
+```
 
 yarn electron:serve
 
