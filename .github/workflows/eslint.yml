@@ -35,11 +35,8 @@ jobs:
           yarn install
 
       - name: Run ESLint
-        run: npx eslint .
-          --config package.json
-          --ext .js,.ts
-          --format @microsoft/eslint-formatter-sarif
-          --output-file eslint-results.sarif
+        run: |
+          yarn lint
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
