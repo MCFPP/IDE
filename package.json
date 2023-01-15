@@ -14,6 +14,7 @@
 	},
 	"main": "background.js",
 	"dependencies": {
+		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"core-js": "^3.8.3",
 		"electron-settings": "^4.0.2",
 		"vue": "^3.2.13",
@@ -52,6 +53,10 @@
 			"plugin:vue/vue3-essential",
 			"@vue/standard",
 			"@vue/typescript/recommended"
+		],
+		"ignorePatterns": [
+			"node_modules/*",
+			"dist_electron/*"
 		],
 		"parserOptions": {
 			"ecmaVersion": 2020
