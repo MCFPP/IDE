@@ -15,7 +15,7 @@
                     fill-rule="evenodd" />
             </svg>
             <svg v-if="!contents && name.endsWith('.mcfpp')" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                viewBox="0 0 16 16" fill="currentColor" class="icon" style="color: var(--format-code)">
+                viewBox="0 0 16 16" fill="currentColor" class="icon" style="color: var(--format-function)">
                 <path
                     d="m13 1c.404462-1.8e-7.769047.2435129.923828.6171875.154781.3736744.0692.8038458-.216797 1.0898437l-3.292969 3.2929688 3.292969 3.2929688c.285998.2859978.371578.7161702.216797 1.0898432-.154781.373676-.519365.617188-.923828.617188h-9v3c0 .552285-.4477153 1-1 1s-1-.447715-1-1v-12c0-.5522847.4477153-1 1-1zm-9 2h6.586l-3 3 3 3h-6.586z"
                     fill-rule="evenodd" />
@@ -55,7 +55,7 @@
                     icon='<path d="m3 0c-1.627 0-3 1.373-3 3v8c0 1.627 1.373 3 3 3h5v-2h-5c-0.554 0-1-0.446-1-1v-6c0-0.554 0.446-1 1-1h10c0.554 0 1 0.446 1 1v3h2v-3c0-1.627-1.373-3-3-3h-4l-2-2h-4zm9 10v2h-2v2h2v2h2v-2h2v-2h-2v-2h-2z" />' />
             </div>
             <div style="--btn-color: var(--theme-warning)">
-                <regular-button title="Edit" class="compact" name=""
+                <regular-button title="Edit" @click="renameFile()" class="compact" name=""
                     icon='<path d="m15.086 5.328c1.2188-1.2189 1.2188-3.195 0-4.4139-1.2189-1.2188-3.195-1.2188-4.4139-1e-7l-10.672 10.672v4.4141h4.4141l5.3359-5.336zm-5.0859-0.91396 1.5859 1.5859-8 8h-1.5859v-1.5859z" fill-rule="evenodd" />' />
             </div>
             <div style="--btn-color: var(--theme-disturbing)">
@@ -65,16 +65,21 @@
         </summary>
         <section>
             <tree-item v-for="entry in contents" :key="entry.name" :contents="entry.content"
-                :root="(root ? root + separator : '') + name" :name="entry.name">
+                :root="(root ? root + separator : '') + name" :name="entry.name" @reload-tree="$emit('reload-tree')">
             </tree-item>
         </section>
     </details>
+    <dialog-window :title="dialog?.title" v-if="dialog" @cancel="dialog = null" @confirm="dialogConfirm()">
+        <input v-model="dialogInputField" type="text" placeholder="Name...">
+    </dialog-window>
 </template>
 
 <script lang="ts">
 import { TreeEntry } from "@/background";
 import { Options, Vue } from "vue-class-component";
 import RegularButton from "./RegularButton.vue";
+import DialogWindow, { Dialog } from "../composed/DialogWindow.vue";
+import SelectOption, { Option } from "./SelectOption.vue";
 
 @Options({
     props: {
@@ -84,7 +89,10 @@ import RegularButton from "./RegularButton.vue";
     },
     components: {
         RegularButton,
+        DialogWindow,
+        SelectOption,
     },
+    emits: ["reload-tree"],
 })
 
 export default class TreeItem extends Vue {
@@ -93,10 +101,49 @@ export default class TreeItem extends Vue {
     contents!: TreeEntry[];
     separator = window.API.separator;
     show = true;
+    dialog: Dialog | null = null;
+    dialogInputField = "";
+    fileTypeOptions: Option[] = [
+        {
+            name: "function",
+            icon: "<path d=\"m13 1c.404462-1.8e-7.769047.2435129.923828.6171875.154781.3736744.0692.8038458-.216797 1.0898437l-3.292969 3.2929688 3.292969 3.2929688c.285998.2859978.371578.7161702.216797 1.0898432-.154781.373676-.519365.617188-.923828.617188h-9v3c0 .552285-.4477153 1-1 1s-1-.447715-1-1v-12c0-.5522847.4477153-1 1-1zm-9 2h6.586l-3 3 3 3h-6.586z\" fill- rule=\"evenodd\" /> ",
+            description: "Function",
+        },
+        {
+            name: "advancement",
+            icon: "<path d=\"m8 4.3774 1.0648 2.157 2.3805 0.34617-1.7224 1.6793 0.40638 2.3709-2.1293-1.1192-2.1293 1.1192 0.40638-2.3709-1.7224-1.6793 2.3805-0.34617zm1e-7 -4.3774 2.3515 4.7634 5.2569 0.76446-3.8036 3.7084 0.89744 5.2359-4.7023-2.4715-4.7023 2.4715 0.89744-5.2359-3.8036-3.7084 5.2569-0.76446z\" fill- rule=\"evenodd\" /> ",
+            description: "Advancement",
+        },
+        {
+            name: "recipe",
+            icon: "<path d=\"m5.5 3c-.27614 0-.5.22386-.5.5v5.5h5v3.5c0 .27614.22386.5.5.5s.5-.22386.5-.5v-9.5zm8.5 2h-1v-1.5c0-.27614.22386-.5.5-.5s.5.22386.5.5zm-11.5 8c-.27614 0-.5-.22386-.5-.5v-1.5h6v2h-5.5zm.5-9.5c0-1.3807 1.1193-2.5 2.5-2.5h8c1.3807 0 2.5 1.1193 2.5 2.5v3.5h-3v5.5c0 1.3807-1.1193 2.5-2.5 2.5h-8c-1.3807 0-2.5-1.1193-2.5-2.5v-3.5h3v-5.5z\" fill- rule=\"evenodd\" /> ",
+            description: "Recipe",
+        },
+        {
+            name: "item_modifier",
+            icon: "<path d=\"m12 15v-2h-2.0859375l-1.9453125-1.968749 1.53125-1.531251 1.5 1.5h1v-2h1l3 3-3 3zm-8.5-8.482422-1.5-1.517578h-2v-2h3l2 2z\" /> <path d=\"m13 1h-1v2h-2l-8 8h-2v2h3l8-8h1v2h1l3-3z\" />",
+            description: "Item Modifier",
+        },
+    ];
 
     deleteFile() {
         window.API.send.removeFile(this.root + this.separator + this.name);
+        this.$emit("reload-tree");
         this.show = false;
+    }
+
+    renameFile() {
+        this.dialogInputField = this.name.split(".")[0];
+        this.dialog = {
+            title: `Rename ${this.name}`,
+            id: "rename",
+        };
+    }
+
+    dialogConfirm() {
+        window.API.send.move(`${this.root}${this.separator}${this.name}`, this.name.split(".")[1] ? `${this.root}${this.separator}${this.dialogInputField}.${this.name.split(".")[1]}` : `${this.root}${this.separator}${this.dialogInputField}`);
+        this.$emit("reload-tree");
+        this.dialog = null;
     }
 }
 </script>
@@ -143,6 +190,19 @@ details {
     &>section {
         margin-left: 1rem;
         border-left: 2px solid var(--primary-fore);
+    }
+}
+
+input[type="text"] {
+    @extend %reset;
+    width: calc(100% - 2rem);
+    border-radius: 0.5rem;
+    background-color: var(--primary-fore);
+    padding: 0.5rem 1rem;
+    border: 2px solid transparent;
+
+    &:focus {
+        border: 2px solid var(--accent);
     }
 }
 </style>
