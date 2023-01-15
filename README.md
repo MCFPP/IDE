@@ -24,11 +24,8 @@ yarn install
 
 ```
 yarn electron:build
-``` or
 ```
-
+or
+```
 yarn electron:serve
-
-```
-
 ```
